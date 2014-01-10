@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ExpandableListView
+            android:id="@+id/expandableListView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ExpandableListView>
+
+        <ExpandableListView
+            android:id="@+id/expandableListView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ExpandableListView>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" >
+
+            <TableLayout
+                android:id="@+id/TableLayout1"
+                android:layout_width="258dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/calculator_background"
+                android:gravity="left"
+                android:shrinkColumns="*"
+                android:stretchColumns="*" >
+
+                <include layout="@layout/button_row_3_normals" />
+
+                <include layout="@layout/button_row_3_normals" />
+
+                <include layout="@layout/button_row_3_normals" />
+
+                <include layout="@layout/button_row_3_normals" />
+
+                <include layout="@layout/button_row_3_normals" />
+
+                <TableRow>
+
+                    <Button
+                        style="@style/NormalButton"
+                        android:layout_weight="2" />
+
+                    <Button
+                        style="@style/NormalButton"
+                        android:layout_weight="1" />
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="vertical"
+                android:weight="2" >
+
+                <Button
+                    android:id="@+id/topRightButton"
+                    style="@style/NormalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/topMinus1RightButton"
+                    style="@style/NormalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/PlusButton"
+                    style="@style/NormalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2" />
+
+                <Button
+                    android:id="@+id/EqualsButton"
+                    style="@style/NormalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

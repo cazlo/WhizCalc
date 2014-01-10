@@ -16,5 +16,53 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="NormalButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:background">@drawable/button_shape_shadowed</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+    </style>
+    
+    <style name="DoubleButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">20dp</item>
+<!--         <item name="android:background">@drawable/button_shape_shadowed</item> -->
+<!--         <item name="android:textColor">@drawable/button_text_color</item> -->
+    </style>
+    
+    <style name="DoubleButton.Vertical">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+    </style>
+    <style name="DoubleButton.Vertical.Top">
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+    <style name="DoubleButton.Vertical.Bottom">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+    
+    <style name="DoubleButton.Horizontal">
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+    <style name="DoubleButton.Horizontal.Left">
+    	<item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginRight">0dp</item>\
+    </style>
+    <style name="DoubleButton.Horizontal.Right">
+    	<item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginRight">3dp</item>\
+    </style>
+    <style name="wrapBoth">
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+    </style>    
 
 </resources>
