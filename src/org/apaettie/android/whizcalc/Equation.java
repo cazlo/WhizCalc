@@ -45,4 +45,20 @@ public class Equation implements Serializable {
 	public void setIsValid(boolean isValid) {
 		mIsValid = isValid;
 	}
+
+	public String getInfixString() {
+		return mInfixString;
+	}
+
+	public void setInfixString(String infixString) {
+		mInfixString = infixString;
+	}
+
+	public String getPostfixString() {
+		return mPostfixString;
+	}
+
+	public void setPostfixString(String postfixString) {
+		mPostfixString = postfixString;
+	}
 }
