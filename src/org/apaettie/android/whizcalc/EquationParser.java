@@ -1,5 +1,6 @@
 package org.apaettie.android.whizcalc;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import android.util.Log;
@@ -27,6 +28,13 @@ public class EquationParser {
 	private Stack<Character> operationsStack;
 	private String mPostFixString;
 	private String mInfixString;
+	
+	private ArrayList<Character> postfixList;//consists of the string in list form
+											//numbers are indicated by an 'n' and
+											//ops are indicated by an 'o'
+	private ArrayList<Double> postfixNums;
+	private ArrayList<Character> postfixOps;
+	
 	private char currChar;
 	
 	public EquationParser(String infixString, VALID_CHARS charSetIndex){
@@ -58,6 +66,10 @@ public class EquationParser {
 		//char currChar;
 		currChar = ' ';
 		
+		postfixList = new ArrayList<Character>();
+		postfixNums = new ArrayList<Double>();
+		postfixOps = new ArrayList<Character>();
+		
 		//Stack<Double> numStack = new Stack<Double>();
 		operationsStack = new Stack<Character>();
 		
@@ -70,7 +82,8 @@ public class EquationParser {
             	boolean alreadyADecimal = false;
             	int returnIndex = handleNumber(alreadyADecimal, i);
             	if (returnIndex != -1){
-            		i = returnIndex;                
+            		i = returnIndex;         
+            		postfixList.add('n');
             	} else//
             		return null;
                 break;
@@ -107,12 +120,26 @@ public class EquationParser {
 	        //output currentCharacter, the stack contents, and the output
 	        Log.i(TAG, "character: " + currChar);
 	        Log.i(TAG, "stack: " +  operationsStack.toString());
-	        Log.i(TAG, "output: " + mPostFixString);
+	        //Log.i(TAG, "output: " + mPostFixString);
 	    }
 	    
 		//get any remaining operators from the stack
 	    emptyStack();
 		
+	    int numIndex = 0;
+	    int opIndex = 0;
+	    for (char c : postfixList){
+	    	if (c == 'o'){
+	    		mPostFixString = mPostFixString+postfixOps.get(opIndex)+" ";
+	    		opIndex++;
+	    	} else if (c == 'n'){
+	    		mPostFixString = mPostFixString+postfixNums.get(numIndex)+" ";
+	    		numIndex++;
+	    	} else{
+	    		Log.e(TAG, "Internal error(Unexpected character:'"+c+"')");
+	    	}
+	    }
+	    
 		Log.i(TAG, "inToPo returning: "+mPostFixString);
 		return mPostFixString;
 	}
@@ -127,7 +154,9 @@ public class EquationParser {
             		operationsStack.peek() == '-' ||
             		operationsStack.peek() == '*' || 
             		operationsStack.peek() == '/'){
-            	mPostFixString = mPostFixString + operationsStack.pop() + " ";
+            	postfixOps.add(operationsStack.pop());
+            	postfixList.add('o');
+            	//mPostFixString = mPostFixString + operationsStack.pop() + " ";
                 
                 if (operationsStack.isEmpty()){
                     break;//get out of the loop if stack is empty
@@ -146,7 +175,9 @@ public class EquationParser {
                                 //from an empty stack
             while (operationsStack.peek() == '*' || 
                    operationsStack.peek() == '/'){
-            	mPostFixString = mPostFixString + operationsStack.pop() + " ";
+            	postfixOps.add(operationsStack.pop());
+            	postfixList.add('o');
+            	//mPostFixString = mPostFixString + operationsStack.pop() + " ";
                 if (operationsStack.isEmpty()){
                     break;//get out of the loop if stack is empty 
                 }
@@ -164,7 +195,9 @@ public class EquationParser {
                     return false;
                 }
                 else{
-                    mPostFixString = mPostFixString + operationsStack.pop() + " ";
+                	postfixOps.add(operationsStack.pop());
+                	postfixList.add('o');
+                    //mPostFixString = mPostFixString + operationsStack.pop() + " ";
                 }
             }
             //pop the '('
@@ -177,103 +210,156 @@ public class EquationParser {
 	
 	private void emptyStack(){
 		while (!operationsStack.isEmpty()){
-	        char currOP = operationsStack.pop();
-	        if (currOP == '+'){
-	        	mPostFixString = mPostFixString + "+" + " ";
-	        }
-	        else if (currOP == '-'){
-	        	mPostFixString = mPostFixString + '-' + " ";
-	        }
-	        else if (currOP == '*'){
-	        	mPostFixString = mPostFixString + '*' + " ";
-	        }
-	        else if (currOP == '/'){
-	        	mPostFixString = mPostFixString + '/' + " ";
-	        }
+			postfixOps.add(operationsStack.pop());
+        	postfixList.add('o');
+//	        char currOP = operationsStack.pop();
+//	        if (currOP == '+'){
+//	        	mPostFixString = mPostFixString + "+" + " ";
+//	        }
+//	        else if (currOP == '-'){
+//	        	mPostFixString = mPostFixString + '-' + " ";
+//	        }
+//	        else if (currOP == '*'){
+//	        	mPostFixString = mPostFixString + '*' + " ";
+//	        }
+//	        else if (currOP == '/'){
+//	        	mPostFixString = mPostFixString + '/' + " ";
+//	        }
 	        Log.i(TAG, "stack: "+ operationsStack.toString());
 	        Log.i(TAG, "output: " + mPostFixString);
 	    }
 	}
 	
-	//returns index of cursor (for infixString) after getting the entire number
+	//returns index of the last digit in this number (relative to infixString)
 	//returns -1 if there is an error in processing
 	private int handleNumber(boolean alreadyADecimal, int i){
-		while (Character.isDigit(currChar)){//read all numbers until decimal point or other operator
-			mPostFixString = mPostFixString + currChar;
-			
-			//get next char to check for special cases
-    		if ((i + 1) < mInfixString.length()){//if we're not at the end yet
-    			i++;
-    			currChar = mInfixString.charAt(i);
-    		} else{//at the end
-    			return i;//get out of the while loop
-    		}
-    		//check for special cases
-    		if (currChar == '.'){//not at the end, and next char is a .
-    			if (alreadyADecimal){
-    				Log.e(TAG, "Too many decimals");
-    				return -1;
-    			} else{
-    				alreadyADecimal = true;
-    				mPostFixString = mPostFixString + currChar;//add the decimal
-        			i++;
-        			int index = handleNumber(alreadyADecimal, i);
-        			if (index != -1){
-        				return index;
-        			}else {
-        				return -1;
-        			}
-    			}
-    		} else if (currChar == '('){//number abruptly gives way to a (
-    									//this implies that the term in the ( will be multiplies with the number read
-    			currChar = '*';
-    			handleMultiplyDivide();
-    			operationsStack.push('(');
-    			//point to the next char 
-        		if ((i + 1) < mInfixString.length()){//if we're not at the end yet
-        			i++;
-        			currChar = mInfixString.charAt(i);
-        		} else{//at the end
-        			return -1;
-        		}
-    		}
-    	}
-		
-		//number processing is done, so space delimit it;
-		mPostFixString = mPostFixString + " ";
-//    	
-//    	if(currChar == '+' || 
-//    	   currChar == '-'){
-//    		handlePlusMinus();
-//    	}else if (currChar == '*' ||
-//    			   currChar == '/'){ 
-//    		handleMultiplyDivide();
-//    		//break;
-//    	}else if (currChar == ')'){
-//    		if (! handledParentheses()) return -1;
-//    		//break;
-//    	}else if (currChar == '('){
-//    		currChar = '*';
-//    		handleMultiplyDivide();
-//    		operationsStack.push('(');
-//    	}else if(currChar == '.'){
-//    		Log.e(TAG, "unexpected decimal: ");
-//    		return -1;
-//    	}else if (Character.isDigit(currChar)){
-//    		Log.e(TAG, "APPLYING HACK; FIX THIS");
-//    		i--;
-//    	}else{//not a digit and not a .
-//    		Log.e(TAG, "unexpected input: "+currChar);
-//    		return -1;
+//		while (Character.isDigit(currChar)){//read all numbers until decimal point or other operator
+//			mPostFixString = mPostFixString + currChar;
+//			
+//			//get next char to check for special cases
+//    		if ((i + 1) < mInfixString.length()){//if we're not at the end yet
+//    			i++;
+//    			currChar = mInfixString.charAt(i);
+//    		} else{//at the end
+//    			return i;//get out of the while loop
+//    		}
+//    		//check for special cases
+//    		if (currChar == '.'){//not at the end, and next char is a .
+//    			if (alreadyADecimal){
+//    				Log.e(TAG, "Too many decimals");
+//    				return -1;
+//    			} else{
+//    				alreadyADecimal = true;
+//    				mPostFixString = mPostFixString + currChar;//add the decimal
+//        			i++;
+//        			int index = handleNumber(alreadyADecimal, i);
+//        			if (index != -1){
+//        				return index;
+//        			}else {
+//        				return -1;
+//        			}
+//    			}
+//    		} else if (currChar == '('){//number abruptly gives way to a (
+//    									//this implies that the term in the ( will be multiplies with the number read
+//    			currChar = '*';
+//    			handleMultiplyDivide();
+//    			operationsStack.push('(');
+//    			//point to the next char 
+//        		if ((i + 1) < mInfixString.length()){//if we're not at the end yet
+//        			i++;
+//        			currChar = mInfixString.charAt(i);
+//        		} else{//at the end
+//        			return -1;
+//        		}
+//    		}else if (Character.isDigit(currChar)){
+//    			//handle if it is a digit
+//    		}else{
+//    			//it is some other character so process it with the
+//    			//other cases. put i back to normal
+//    			i--;
+//    			currChar = mInfixString.charAt(i);
+//    		}
 //    	}
-    	Log.i(TAG, "postFixString: "+ mPostFixString);
-    	return i;
+//		
+//		//number processing is done, so space delimit it;
+//		mPostFixString = mPostFixString + " ";
+////    	
+////    	if(currChar == '+' || 
+////    	   currChar == '-'){
+////    		handlePlusMinus();
+////    	}else if (currChar == '*' ||
+////    			   currChar == '/'){ 
+////    		handleMultiplyDivide();
+////    		//break;
+////    	}else if (currChar == ')'){
+////    		if (! handledParentheses()) return -1;
+////    		//break;
+////    	}else if (currChar == '('){
+////    		currChar = '*';
+////    		handleMultiplyDivide();
+////    		operationsStack.push('(');
+////    	}else if(currChar == '.'){
+////    		Log.e(TAG, "unexpected decimal: ");
+////    		return -1;
+////    	}else if (Character.isDigit(currChar)){
+////    		Log.e(TAG, "APPLYING HACK; FIX THIS");
+////    		i--;
+////    	}else{//not a digit and not a .
+////    		Log.e(TAG, "unexpected input: "+currChar);
+////    		return -1;
+////    	}
+//    	Log.i(TAG, "postFixString: "+ mPostFixString);
+		int j = i + 1;
+		while (j < mInfixString.length()){
+			try{
+				Double.parseDouble(mInfixString.substring(i, j));
+				j++;
+			} catch (NumberFormatException ex){//found the end of the number
+				Log.i(TAG, "NumberFormatExeception caught in the parser:");
+				Log.i(TAG, ""+ex);
+				Log.i(TAG, "tried to parse '"+mInfixString.substring(i, j)+"'");
+				
+				j--;
+				try{
+					double d = Double.parseDouble(mInfixString.substring(i, j));
+					postfixNums.add(d);
+					
+				} catch(NumberFormatException e){
+					Log.e(TAG, "Unexpected NumberFormatException caught: ");
+					Log.e(TAG, "", e);
+					return -1;
+				}
+				
+				//handle special case: '(' right next to number 
+				char c= mInfixString.charAt(j);
+				if (c=='('){
+					currChar = '*';
+	    			handleMultiplyDivide();
+	    			operationsStack.push('(');
+	    			return(j);
+				} else{
+					return (j-1);//-2 because the character of interest is at j-1
+					 //and this index will be incremented in the calling for loop
+				}
+			}
+		}
+		//if weve made it down this far, the number parsed ok from i to the length
+		try{
+			//String debug = mInfixString.substring(i);
+			double d = Double.parseDouble(mInfixString.substring(i));
+			postfixNums.add(d);
+		}catch(NumberFormatException e){
+			Log.e(TAG, "Unexpected NumberFormatException caught: ");
+			Log.e(TAG, "", e);
+			return -1;
+		}
+    	return j;
 	}
 	
 	/********************************solving the posfix equation *******************************/
 	//takes a space delimited postfix string as input
 	private void solvePostfix(String postfixString){
-		String fullEquationString = "";
+		//String fullEquationString = "";
 		Stack<Double> numStack = new Stack<Double>();
 		Double tokDouble;
 		
