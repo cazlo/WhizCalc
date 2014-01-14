@@ -232,96 +232,21 @@ public class EquationParser {
 	
 	//returns index of the last digit in this number (relative to infixString)
 	//returns -1 if there is an error in processing
-	private int handleNumber(boolean alreadyADecimal, int i){
-//		while (Character.isDigit(currChar)){//read all numbers until decimal point or other operator
-//			mPostFixString = mPostFixString + currChar;
-//			
-//			//get next char to check for special cases
-//    		if ((i + 1) < mInfixString.length()){//if we're not at the end yet
-//    			i++;
-//    			currChar = mInfixString.charAt(i);
-//    		} else{//at the end
-//    			return i;//get out of the while loop
-//    		}
-//    		//check for special cases
-//    		if (currChar == '.'){//not at the end, and next char is a .
-//    			if (alreadyADecimal){
-//    				Log.e(TAG, "Too many decimals");
-//    				return -1;
-//    			} else{
-//    				alreadyADecimal = true;
-//    				mPostFixString = mPostFixString + currChar;//add the decimal
-//        			i++;
-//        			int index = handleNumber(alreadyADecimal, i);
-//        			if (index != -1){
-//        				return index;
-//        			}else {
-//        				return -1;
-//        			}
-//    			}
-//    		} else if (currChar == '('){//number abruptly gives way to a (
-//    									//this implies that the term in the ( will be multiplies with the number read
-//    			currChar = '*';
-//    			handleMultiplyDivide();
-//    			operationsStack.push('(');
-//    			//point to the next char 
-//        		if ((i + 1) < mInfixString.length()){//if we're not at the end yet
-//        			i++;
-//        			currChar = mInfixString.charAt(i);
-//        		} else{//at the end
-//        			return -1;
-//        		}
-//    		}else if (Character.isDigit(currChar)){
-//    			//handle if it is a digit
-//    		}else{
-//    			//it is some other character so process it with the
-//    			//other cases. put i back to normal
-//    			i--;
-//    			currChar = mInfixString.charAt(i);
-//    		}
-//    	}
-//		
-//		//number processing is done, so space delimit it;
-//		mPostFixString = mPostFixString + " ";
-////    	
-////    	if(currChar == '+' || 
-////    	   currChar == '-'){
-////    		handlePlusMinus();
-////    	}else if (currChar == '*' ||
-////    			   currChar == '/'){ 
-////    		handleMultiplyDivide();
-////    		//break;
-////    	}else if (currChar == ')'){
-////    		if (! handledParentheses()) return -1;
-////    		//break;
-////    	}else if (currChar == '('){
-////    		currChar = '*';
-////    		handleMultiplyDivide();
-////    		operationsStack.push('(');
-////    	}else if(currChar == '.'){
-////    		Log.e(TAG, "unexpected decimal: ");
-////    		return -1;
-////    	}else if (Character.isDigit(currChar)){
-////    		Log.e(TAG, "APPLYING HACK; FIX THIS");
-////    		i--;
-////    	}else{//not a digit and not a .
-////    		Log.e(TAG, "unexpected input: "+currChar);
-////    		return -1;
-////    	}
-//    	Log.i(TAG, "postFixString: "+ mPostFixString);
-		int j = i + 1;
+	private int handleNumber(boolean alreadyADecimal, int numStart){
+
+		int j = numStart + 1;
 		while (j < mInfixString.length()){
 			try{
-				Double.parseDouble(mInfixString.substring(i, j));
+				Double.parseDouble(mInfixString.substring(numStart, j));
 				j++;
 			} catch (NumberFormatException ex){//found the end of the number
 				Log.i(TAG, "NumberFormatExeception caught in the parser:");
 				Log.i(TAG, ""+ex);
-				Log.i(TAG, "tried to parse '"+mInfixString.substring(i, j)+"'");
+				Log.i(TAG, "tried to parse '"+mInfixString.substring(numStart, j)+"'");
 				
 				j--;
 				try{
-					double d = Double.parseDouble(mInfixString.substring(i, j));
+					double d = Double.parseDouble(mInfixString.substring(numStart, j));
 					postfixNums.add(d);
 					
 				} catch(NumberFormatException e){
@@ -343,10 +268,10 @@ public class EquationParser {
 				}
 			}
 		}
-		//if weve made it down this far, the number parsed ok from i to the length
+		//if weve made it down this far, the number parsed ok from numStart to the length
 		try{
-			//String debug = mInfixString.substring(i);
-			double d = Double.parseDouble(mInfixString.substring(i));
+			//String debug = mInfixString.substring(numStart);
+			double d = Double.parseDouble(mInfixString.substring(numStart));
 			postfixNums.add(d);
 		}catch(NumberFormatException e){
 			Log.e(TAG, "Unexpected NumberFormatException caught: ");
