@@ -26,5 +26,19 @@
     <string name="history_hint">History items go here</string>
     <string name="resultLabel">Result:</string>
     <string name="resultsLabel">Results:</string>
+    <string name="settings_title">Settings</string>
+    <string name="setting_history_amount_prompt">History amount</string>
+    <string name="setting_startupModePrompt">Startup Mode</string>
+    <string name="settings_inputModePrompt">Input Mode</string>
+    <string name="setting_shake_prompt">Shaking clears input</string>
+    <string name="setting_defaultStartupPompt">Default Startup mode</string>
+    <string name="setting_startupBasic">Basic</string>
+    <string name="setting_startupAdvanced">Advanced (Scientific)</string>
+    <string name="setting_startupLast">Last used</string>
+    <string name="setting_startupGraph">Graphing</string>
+    <string name="setting_startupClassic">Classic calculator</string>
+    <string name="setting_switchMode">Switch To</string>
+    <string name="setting_inputPostix">Postix</string>
+    <string name="setting_inputInfix">Infix</string>
 
 </resources>
