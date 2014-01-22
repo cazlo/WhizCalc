@@ -88,7 +88,7 @@ public class BasicCalcFragment extends Fragment {
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View groupV,
 					int groupPosition, long id) {
-				TextView resultLabel = (TextView)v.findViewById(R.id.basicCalc_resultLabelTextView);
+				TextView resultLabel = (TextView)v.findViewById(R.id.group_labelTextView);
 				
 				if (mResultListView.isGroupExpanded(groupPosition)){
 					resultLabel.setText(R.string.resultLabel);
@@ -199,7 +199,7 @@ public class BasicCalcFragment extends Fragment {
 			public void onClick(View v) {
 				Equation solvedEq = new EquationParser(mWorkingText, VALID_CHARS.BASIC )
 												.getResult();
-				if (solvedEq.isIsValid()){
+				if (solvedEq.isValid()){
 					CalcResult newResult = new CalcResult(solvedEq.getResult());
 					CalcResult oldResult = mResultList.remove(0);
 					List<Equation> eqList = oldResult.getEquationList();

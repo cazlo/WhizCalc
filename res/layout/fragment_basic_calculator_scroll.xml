@@ -20,13 +20,13 @@
         android:background="@android:drawable/editbox_dropdown_light_frame"
         android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/basicCalc_resultLabelTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|left"
-            android:layout_margin="4dp"
-            android:text="@string/resultLabel" />
+<!--         <TextView -->
+<!--             android:id="@+id/basicCalc_resultLabelTextView" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_gravity="center|left" -->
+<!--             android:layout_margin="4dp" -->
+<!--             android:text="@string/resultLabel" /> -->
 
         <ExpandableListView
             android:id="@+id/basicCalc_result_ListView"

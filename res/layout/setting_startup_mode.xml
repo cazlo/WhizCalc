@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/setting_startupModePrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_startupModePrompt" />
+
+    <RadioGroup
+        android:id="@+id/setting_startupModeRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/setting_startupModePrompt" >
+
+        <RadioButton
+            android:id="@+id/setting_startupBasicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/setting_startupBasic" />
+
+        <RadioButton
+            android:id="@+id/setting_startupAdvancedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_startupAdvanced" />
+        <RadioButton
+            android:id="@+id/setting_startupGraphButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_startupGraph" />
+        <RadioButton
+            android:id="@+id/setting_startupLastUsedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_startupLast" />
+    </RadioGroup>
+
+</RelativeLayout>

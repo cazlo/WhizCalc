@@ -1,9 +1,19 @@
 package org.apaettie.android.whizcalc;
 
-import java.io.Serializable;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-@SuppressWarnings("serial")
-public class Equation implements Serializable {
+import android.util.Log;
+
+public class Equation {
+	private static final String TAG = "org.apaettie.android.whizcalc.Equation";
+	
+	private static final String JSON_EQ = "equationStr";
+	private static final String JSON_IN = "infixStr";
+	private static final String JSON_PO = "postfixStr";
+	private static final String JSON_NUM = "resultDouble";
+	private static final String JSON_VALID = "isValidBool";
+	
 	private String mFullEquation;//includes the result
 	private String mInfixString;//the equation in infix notation;
 	private String mPostfixString;//the equation in postfix notation; 
@@ -22,6 +32,40 @@ public class Equation implements Serializable {
 		mIsValid = isValid;
 	}
 
+	//construct from json
+	public Equation(JSONObject json) throws JSONException{
+		if (json.has(JSON_EQ))
+			mFullEquation = json.getString(JSON_EQ);
+		if (json.has(JSON_IN))
+			mInfixString = json.getString(JSON_IN);
+		if (json.has(JSON_PO))
+			mPostfixString = json.getString(JSON_PO);
+		if (json.has(JSON_NUM))
+			mResult = json.getDouble(JSON_NUM);
+		if (json.has(JSON_VALID))
+			mIsValid = json.getBoolean(JSON_VALID);
+	}
+	
+	public JSONObject toJSON()throws JSONException{
+		JSONObject json = new JSONObject();
+		json.put(JSON_EQ, mFullEquation);
+		json.put(JSON_IN, mInfixString);
+		json.put(JSON_NUM, mResult);
+		json.put(JSON_PO, mPostfixString);
+		json.put(JSON_VALID, mIsValid);
+		
+		return json;
+	}
+	
+	/*********************** Overrides ***********************************/
+	@Override
+	public String toString(){
+		if (mFullEquation == null)
+			Log.e(TAG, "Equation.toString::fullEquation = null");
+		return mFullEquation;
+	}
+	
+	/************************ Getters and Setters *************************/
 	public String getFullEquation() {
 		return mFullEquation;
 	}
@@ -38,7 +82,7 @@ public class Equation implements Serializable {
 		mResult = result;
 	}
 
-	public boolean isIsValid() {
+	public boolean isValid() {
 		return mIsValid;
 	}
 

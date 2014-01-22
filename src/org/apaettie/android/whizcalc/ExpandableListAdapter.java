@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -61,15 +61,25 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		
 		resultTV.setText(Double.toString(res.getResult()));
 		
-		Button deleteButton = (Button)v.findViewById(R.id.child_button);
+		ImageButton deleteButton = (ImageButton)v.findViewById(R.id.child_delete_button);
+		final int finalPos = childPosition;//childPosition needs to be final to be accessed in the onclicklistener
 		deleteButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
+				mResultList.remove(finalPos);
+				notifyDataSetChanged();
 			}
 		} );
+		
+		ImageButton copyButton = (ImageButton)v.findViewById(R.id.child_copy_button);
+		copyButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+			}
+		});
 		
 		return v;
 		

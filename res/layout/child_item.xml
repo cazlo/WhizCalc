@@ -8,19 +8,31 @@
     <TextView
         android:id="@+id/child_textView"
         android:layout_width="0dp"
-    	android:layout_weight="9"
+    	android:layout_weight="8"
         android:layout_height="wrap_content"
         android:text="TextView" 
     	android:gravity="center"
         />
 
-    <Button
-        android:id="@+id/child_button"
+    <ImageButton
+        android:id="@+id/child_copy_button"
         android:layout_width="0dp"
     	android:layout_weight="1"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        android:text="Button" 
+        android:contentDescription="@string/copy_button_description"
+        android:src="@drawable/ic_menu_paste_holo_light"
+        android:layout_gravity="right"
+        />
+    
+    <ImageButton
+        android:id="@+id/child_delete_button"
+        android:layout_width="0dp"
+    	android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:contentDescription="@string/delete"
         android:layout_gravity="right"
         />
 

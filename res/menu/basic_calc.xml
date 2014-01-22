@@ -1,9 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+    <item android:id="@+id/menu_item_settings" 
+        android:showAsAction="ifRoom|withText"
+        android:icon="@android:drawable/ic_menu_more" 
+        android:title="@string/menu_item_settings">
+    </item>
+    
+    <item android:id="@+id/menu_item_switchMode" 
+        android:showAsAction="ifRoom|withText"
+        android:icon="@android:drawable/ic_menu_more" 
+        android:title="@string/menu_item_switchMode">
+    </item>
 
+    <item android:id="@+id/menu_item_aboutProgram" 
+        android:showAsAction="ifRoom|withText"
+        android:icon="@android:drawable/ic_menu_info_details" 
+        android:title="@string/menu_item_aboutProgram">
+    </item>
+    
 </menu>

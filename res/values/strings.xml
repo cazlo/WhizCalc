@@ -40,5 +40,10 @@
     <string name="setting_switchMode">Switch To</string>
     <string name="setting_inputPostix">Postix</string>
     <string name="setting_inputInfix">Infix</string>
+    <string name="menu_item_settings">Settings</string>
+    <string name="menu_item_switchMode">Swtich Mode</string>
+    <string name="menu_item_aboutProgram">About WhizCalc</string>
+    <string name="delete">Delete</string>
+    <string name="copy_button_description">Copy to clipboard</string>
 
 </resources>

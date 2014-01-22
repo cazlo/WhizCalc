@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/setting_historyAmount_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_history_amount_prompt" />
+    
+    <ImageView 
+        android:id="@+id/setting_history_divider"
+    	android:layout_below="@id/setting_historyAmount_prompt"
+    	android:src="@android:drawable/divider_horizontal_dark"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scaleType="fitXY"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp" />
+    
+    <TextView
+        android:id="@+id/setting_historyAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setting_history_divider"
+        android:layout_margin="4dp"
+        android:layout_marginLeft="16dp"
+        android:text="5" />
+
+    <SeekBar
+        android:id="@+id/setting_historySeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_margin="4dp"
+        android:layout_below="@id/setting_historyAmount_prompt"
+        android:layout_toRightOf="@id/setting_historyAmount"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>
