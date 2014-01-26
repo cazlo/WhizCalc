@@ -23,6 +23,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	private int mItemLayoutId = R.layout.child_item;
 	private int mGroupLayoutId = R.layout.group_item;
+	private static TextView sResultLabelTV;
 	private Context ctx;
 	
 	public ExpandableListAdapter(List<CalcResult> resultList, Context ctx) {
@@ -68,6 +69,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 			@Override
 			public void onClick(View v) {
 				mResultList.remove(finalPos);
+				if (mResultList.size() == 0){
+					mResultList.add(new CalcResult());
+					sResultLabelTV.setText(R.string.resultLabel);
+				}
 				notifyDataSetChanged();
 			}
 		} );
@@ -118,6 +123,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 				      (Context.LAYOUT_INFLATER_SERVICE);
 			v = inflater.inflate(R.layout.group_item, parent, false);
 		}
+		
+		sResultLabelTV = (TextView) v.findViewById(R.id.group_labelTextView);
 		
 		TextView resultTV = (TextView) v.findViewById(R.id.group_textView);
 		
