@@ -92,7 +92,7 @@ public class BasicCalcFragment extends Fragment {
 				
 				if (mResultListView.isGroupExpanded(groupPosition)){
 					resultLabel.setText(R.string.resultLabel);
-				} else{
+				} else if (mResultList.size() > 1){
 					resultLabel.setText(R.string.resultsLabel);
 				}
 //				adapter.onGroupExpanded(groupPosition);
@@ -116,6 +116,13 @@ public class BasicCalcFragment extends Fragment {
 		});
 		
 		Button cButton = (Button)v.findViewById(R.id.basicCalc_buttonC);
+		cButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO: Make c button delete the last input token(last # or function)
+			}
+		});
 		
 		Button backspaceButton = (Button)v.findViewById(R.id.basicCalc_buttonUNDETERMINED);
 		backspaceButton.setOnClickListener(new OnClickListener() {
