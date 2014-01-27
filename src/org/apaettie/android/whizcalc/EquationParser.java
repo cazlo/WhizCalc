@@ -357,4 +357,13 @@ public class EquationParser {
 //			
 //		}
 //	}
+	
+	public static boolean isValidOperation(char c, VALID_CHARS opsMode){
+		for (int i = 0; i < VALID_CHARS_SET[opsMode.ordinal()].length; i ++){
+			if (c == VALID_CHARS_SET[opsMode.ordinal()][i]){
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -5,10 +5,14 @@ import java.util.List;
 
 import org.apaettie.android.whizcalc.EquationParser.VALID_CHARS;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -77,7 +81,6 @@ public class BasicCalcFragment extends Fragment {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
-				// TODO Auto-generated method stub
 				Log.i(TAG, "Child: "+childPosition+" clicked");
 				return false;
 			}
@@ -120,7 +123,30 @@ public class BasicCalcFragment extends Fragment {
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO: Make c button delete the last input token(last # or function)
+				// TODO: validate c function
+				if (mWorkingText == "0"){
+					//do nothing
+					return;
+				}
+				String [] tokens = mWorkingText.split("\\d");//split working text into digits
+				switch (tokens.length){
+				case 0://no digits
+					break;
+				case 1: //only 1 digit
+					mWorkingText = "0";
+					mWorkingTextView.setText(mWorkingText);
+					break;
+				default://more than 1 digits
+					int lastTokIndex = mWorkingText.lastIndexOf(tokens[tokens.length-1]);
+					mWorkingText = mWorkingText.substring(0, lastTokIndex);
+					if (EquationParser.isValidOperation(mWorkingText.charAt(mWorkingText.length() - 1)
+													  , VALID_CHARS.BASIC)){
+						//remove last character if it is an operation
+						mWorkingText = mWorkingText.substring(0, mWorkingText.length()-1);
+					}
+					
+				}
+				
 			}
 		});
 		
@@ -141,7 +167,7 @@ public class BasicCalcFragment extends Fragment {
 		plusMinusButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//TODO
+				//TODO: find last digit token input and change its sign
 			}
 		});
 		
@@ -278,6 +304,28 @@ public class BasicCalcFragment extends Fragment {
 		return v;
 	}
 	
-
+	@Override
+	public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.basic_calc, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menuItem){
+		switch (menuItem.getItemId()){
+		case R.id.menu_item_aboutProgram:
+			//TODO handle program info
+			return true;
+		case R.id.menu_item_settings:
+			Intent i = new Intent(getActivity(), SettingsFragment.class);
+			startActivity(i);
+			return true;
+		case R.id.menu_item_switchMode:
+			//TODO handle switch mode
+			return true;
+		default:
+			return super.onOptionsItemSelected(menuItem);
+		}
+	}
 	
 }
