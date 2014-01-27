@@ -2,7 +2,10 @@ package org.apaettie.android.whizcalc;
 
 import java.util.List;
 
+import android.annotation.TargetApi;
+import android.content.ClipData;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,9 +59,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 			v = inflater.inflate(mItemLayoutId, parent, false);
 		}
 		
-		TextView resultTV = (TextView) v.findViewById(R.id.child_textView);
+		final TextView resultTV = (TextView) v.findViewById(R.id.child_textView);
 		
-		Equation res = mResultList.get(groupPosition).getEquationList().get(childPosition);
+		final Equation res = mResultList.get(groupPosition).getEquationList().get(childPosition);
 		
 		resultTV.setText(Double.toString(res.getResult()));
 		
@@ -80,16 +83,47 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		ImageButton copyButton = (ImageButton)v.findViewById(R.id.child_copy_button);
 		copyButton.setOnClickListener(new OnClickListener() {
 			
+			@TargetApi(Build.VERSION_CODES.HONEYCOMB)//don't worry we'll check this programatically
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				if (android.os.Build.VERSION.SDK_INT >= 
+						android.os.Build.VERSION_CODES.HONEYCOMB){
+					android.content.ClipboardManager cm = 
+							(android.content.ClipboardManager)ctx.getSystemService(Context.CLIPBOARD_SERVICE);
+					ClipData clip = ClipData.newPlainText(resultTV.getText(),//label
+														  resultTV.getText());//text
+					cm.setPrimaryClip(clip);
+				} else{
+					android.text.ClipboardManager cm = 
+							(android.text.ClipboardManager)ctx.getSystemService(Context.CLIPBOARD_SERVICE);
+					cm.setText(resultTV.getText());
+				}
 			}
 		});
+		
+		//setup on click listener for child item
+		//clicking the item toggles only showing result and showing full eq
+		View.OnClickListener switchEQListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (res.isFullEqActive()){
+					resultTV.setText(Double.toString(res.getResult()));
+					res.setIsFullEqActive(false);
+				}
+				else{
+					resultTV.setText(res.getFullEquation());
+					res.setIsFullEqActive(true);
+				}
+			}
+		};
+		
+		v.setOnClickListener(switchEQListener);
 		
 		return v;
 		
 	}
-
+	
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		int size = mResultList.get(groupPosition).getEquationList().size();

@@ -19,17 +19,20 @@ public class Equation {
 	private String mPostfixString;//the equation in postfix notation; 
 	private double mResult;
 	private boolean mIsValid;
+	private boolean mFullEqActive;
 	
 	public Equation(String fullEquation, long result){
 		mFullEquation = fullEquation;
 		mResult = result;
 		mIsValid = true;//assume it to be valid unless explicitly stated it is not
+		mFullEqActive = false;//default to only show the result
 	}
 	
 	public Equation(String fullEquation, long result, boolean isValid){
 		mFullEquation = fullEquation;
 		mResult = result;
 		mIsValid = isValid;
+		mFullEqActive = false;//default to only show the result
 	}
 
 	//construct from json
@@ -43,7 +46,9 @@ public class Equation {
 		if (json.has(JSON_NUM))
 			mResult = json.getDouble(JSON_NUM);
 		if (json.has(JSON_VALID))
-			mIsValid = json.getBoolean(JSON_VALID);
+			mIsValid = json.getBoolean(JSON_VALID);		
+		mFullEqActive = false;//default to only show the result
+
 	}
 	
 	public JSONObject toJSON()throws JSONException{
@@ -104,5 +109,13 @@ public class Equation {
 
 	public void setPostfixString(String postfixString) {
 		mPostfixString = postfixString;
+	}
+	
+	public boolean isFullEqActive(){
+		return mFullEqActive;
+	}
+	
+	public void setIsFullEqActive(boolean isFullEqActive){
+		mFullEqActive = isFullEqActive;
 	}
 }
